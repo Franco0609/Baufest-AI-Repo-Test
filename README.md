@@ -35,6 +35,8 @@ Este repositorio incluye una aplicación **FastAPI** en la carpeta `backend` que
 ```bash
 cd backend
 export JWT_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
+export ADMIN_USERNAME="admin"
+export ADMIN_PASSWORD_HASH='$2b$12$kXf36UAup8oGZcwbLPoWF.uRZVSogsi4wqP8D0TGrZkXYSywGGsk6'
 poetry install
 poetry run uvicorn app.main:app --reload
 ```
@@ -84,10 +86,14 @@ Desde la raíz del proyecto:
 
 ```bash
 export JWT_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
+export ADMIN_USERNAME="admin"
+export ADMIN_PASSWORD_HASH='$2b$12$kXf36UAup8oGZcwbLPoWF.uRZVSogsi4wqP8D0TGrZkXYSywGGsk6'
 docker compose up --build
 ```
 
 Luego podrás consumir la API en `http://127.0.0.1:8000`.
+
+El valor de `ADMIN_PASSWORD_HASH` del ejemplo corresponde a la contraseña `admin123` generada con `passlib[bcrypt]`.
 
 ## Endpoints disponibles
 

@@ -4,5 +4,7 @@ services:
       context: ./backend
     environment:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY before starting docker compose}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:?Set ADMIN_USERNAME before starting docker compose}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:?Set ADMIN_PASSWORD_HASH before starting docker compose}
     ports:
       - "8000:8000"

@@ -11,9 +11,17 @@ ACCESS_TOKEN_EXPIRE_SECONDS = 300
 REFRESH_TOKEN_EXPIRE_SECONDS = 3600
 ALGORITHM = "HS256"
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH")
 
 if not SECRET_KEY:
     raise RuntimeError("JWT_SECRET_KEY environment variable is required")
+if len(SECRET_KEY) < 32:
+    raise RuntimeError("JWT_SECRET_KEY must be at least 32 characters long")
+if not ADMIN_USERNAME:
+    raise RuntimeError("ADMIN_USERNAME environment variable is required")
+if not ADMIN_PASSWORD_HASH:
+    raise RuntimeError("ADMIN_PASSWORD_HASH environment variable is required")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -40,10 +48,7 @@ class AccessTokenResponse(BaseModel):
     expires_in: int = ACCESS_TOKEN_EXPIRE_SECONDS
 
 
-DEMO_USER = {
-    "username": "admin",
-    "hashed_password": "$2b$12$kXf36UAup8oGZcwbLPoWF.uRZVSogsi4wqP8D0TGrZkXYSywGGsk6",
-}
+DEMO_USER = {"username": ADMIN_USERNAME, "hashed_password": ADMIN_PASSWORD_HASH}
 
 app = FastAPI(title="Backend JWT API", version="1.0.0")
 
