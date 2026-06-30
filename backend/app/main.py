@@ -48,7 +48,7 @@ class AccessTokenResponse(BaseModel):
     expires_in: int = ACCESS_TOKEN_EXPIRE_SECONDS
 
 
-DEMO_USER = {"username": ADMIN_USERNAME, "hashed_password": ADMIN_PASSWORD_HASH}
+ADMIN_USER = {"username": ADMIN_USERNAME, "hashed_password": ADMIN_PASSWORD_HASH}
 
 app = FastAPI(title="Backend JWT API", version="1.0.0")
 
@@ -60,8 +60,8 @@ def read_root() -> dict[str, str]:
 
 @app.post("/auth/token", response_model=TokenResponse)
 def create_token(payload: TokenRequest) -> TokenResponse:
-    if payload.username != DEMO_USER["username"] or not pwd_context.verify(
-        payload.password, DEMO_USER["hashed_password"]
+    if payload.username != ADMIN_USER["username"] or not pwd_context.verify(
+        payload.password, ADMIN_USER["hashed_password"]
     ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -84,7 +84,11 @@ def refresh_token(payload: RefreshRequest) -> AccessTokenResponse:
             detail="Invalid refresh token",
         ) from exc
 
-    if decoded_token.get("type") != "refresh" or decoded_token.get("sub") != DEMO_USER["username"]:
+    if (
+        decoded_token.get("type") != "refresh"
+        or decoded_token.get("sub") != ADMIN_USER["username"]
+        or "exp" not in decoded_token
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid refresh token",
