@@ -10,10 +10,10 @@ from pydantic import BaseModel
 ACCESS_TOKEN_EXPIRE_SECONDS = 300
 REFRESH_TOKEN_EXPIRE_SECONDS = 3600
 ALGORITHM = "HS256"
-SECRET_KEY = os.getenv(
-    "JWT_SECRET_KEY",
-    "23cba0ce99474d559db01def37b809ca7b28b7f8d37d40b7b25f2b2dd83f6cf1",
-)
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+
+if not SECRET_KEY:
+    raise RuntimeError("JWT_SECRET_KEY environment variable is required")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -42,7 +42,7 @@ class AccessTokenResponse(BaseModel):
 
 DEMO_USER = {
     "username": "admin",
-    "hashed_password": pwd_context.hash("admin123"),
+    "hashed_password": "$2b$12$kXf36UAup8oGZcwbLPoWF.uRZVSogsi4wqP8D0TGrZkXYSywGGsk6",
 }
 
 app = FastAPI(title="Backend JWT API", version="1.0.0")

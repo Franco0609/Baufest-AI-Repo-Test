@@ -34,6 +34,7 @@ Este repositorio incluye una aplicación **FastAPI** en la carpeta `backend` que
 
 ```bash
 cd backend
+export JWT_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
 poetry install
 poetry run uvicorn app.main:app --reload
 ```
@@ -82,6 +83,7 @@ Respuesta esperada:
 Desde la raíz del proyecto:
 
 ```bash
+export JWT_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
 docker compose up --build
 ```
 
