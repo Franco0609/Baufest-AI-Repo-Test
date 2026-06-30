@@ -1,0 +1,8 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      JWT_SECRET_KEY: 23cba0ce99474d559db01def37b809ca7b28b7f8d37d40b7b25f2b2dd83f6cf1
+    ports:
+      - "8000:8000"
